@@ -37,7 +37,7 @@ flutter pub get
 ```
 2. Run in android emulator
 ```rb
-flutter run -d  <android emulator id>
+flutter run -d  <android emulator id> --dart-define=OPEN_WEATHER_KEY=<open_weather_very_secret_key>
 ```
 To discover the `android emulator id` you can run:
 ```rb
