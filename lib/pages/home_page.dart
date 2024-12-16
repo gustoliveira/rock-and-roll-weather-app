@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(statusIcon: status()),
-      body: body(),
+      body: CitiesList(),
     );
   }
 
@@ -35,34 +35,5 @@ class _HomePageState extends State<HomePage> {
     }
 
     return null;
-  }
-
-  Widget body() {
-    return Container(
-      alignment: Alignment.center,
-      margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
-      child: Column(
-        spacing: 10,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          textField(),
-          Expanded(child: CitiesList()),
-        ],
-      ),
-    );
-  }
-
-  Widget textField() {
-    return TextField(
-      controller: searchCitiesTextController,
-      onChanged: (_) {},
-      decoration: InputDecoration(
-        hintText: "Search cities...",
-        prefixIcon: Icon(Icons.search),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
   }
 }

@@ -133,4 +133,28 @@ void main() {
       expect(find.byType(CityPage), findsOneWidget);
     });
   });
+
+  group('check filter cities', () {
+    testWidgets('open the CityPage when tap in the card', (tester) async {
+      await createWidget(tester);
+
+      expect(find.byType(CitiesList), findsOneWidget);
+      expect(find.byType(CityCard), findsNWidgets(4));
+      expect(find.text("Silverstone"), findsOneWidget);
+      expect(find.text("São Paulo"), findsOneWidget);
+      expect(find.text("Melbourne"), findsOneWidget);
+      expect(find.text("Monaco"), findsOneWidget);
+
+      const testInput = 'Monaco';
+      await tester.enterText(find.byType(TextField), testInput);
+
+      await tester.idle();
+      await tester.pump();
+
+      expect(find.text("Silverstone"), findsNothing);
+      expect(find.text("São Paulo"), findsNothing);
+      expect(find.text("Melbourne"), findsNothing);
+      expect(find.text("Monaco"), findsOneWidget);
+    });
+  });
 }
