@@ -61,8 +61,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget backButton(BuildContext context) {
-    return SizedBox(
-      width: 20,
+    return Container(
+      margin: const EdgeInsets.only(top: 5),
+      width: 40,
+      height: 40,
       child: Visibility(
         visible: showReturnButton,
         child: Align(
