@@ -26,6 +26,15 @@ class MockCityWeatherProvider extends ChangeNotifier
   }
 
   @override
+  Future<void> fetchCityForecastWeather(
+    String cityName,
+    String countryName,
+  ) async {
+    _someCityFetching = true;
+    notifyListeners();
+  }
+
+  @override
   City getCity(String cityName) {
     return City(
       cityName,

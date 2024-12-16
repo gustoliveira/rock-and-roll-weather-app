@@ -38,6 +38,7 @@ dependencies:
   internet_connection_checker_plus: ^2.5.2
   http: ^1.2.2
   intl: ^0.20.1
+  flutter_feather_icons: ^2.0.0+1
 
 dev_dependencies:
   flutter_test:

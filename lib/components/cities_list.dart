@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rock_and_roll_weather_app/components/city_card.dart';
+import 'package:rock_and_roll_weather_app/pages/city_page.dart';
 import 'package:rock_and_roll_weather_app/providers/city_weather_provider.dart';
 
 class CitiesList extends StatelessWidget {
@@ -43,6 +44,14 @@ class CitiesList extends StatelessWidget {
           child: CityCard(
             "${providers[index]['cityName']}",
             "${providers[index]['coutryName']}",
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return CityPage(
+                  cityName: providers[index]['cityName'] as String,
+                  countryName: providers[index]['coutryName'] as String,
+                );
+              }));
+            },
           ),
         );
       },

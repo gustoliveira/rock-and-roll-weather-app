@@ -4,9 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:rock_and_roll_weather_app/components/cities_list.dart';
 import 'package:rock_and_roll_weather_app/components/city_card.dart';
+import 'package:rock_and_roll_weather_app/components/city_page_header.dart';
+import 'package:rock_and_roll_weather_app/components/current_weather_info_card.dart';
 import 'package:rock_and_roll_weather_app/components/custom_app_bar.dart';
+import 'package:rock_and_roll_weather_app/components/forecast_temperatures_list.dart';
 import 'package:rock_and_roll_weather_app/pages/city_page.dart';
-import 'package:rock_and_roll_weather_app/pages/home_page.dart';
 import 'package:rock_and_roll_weather_app/providers/city_weather_provider.dart';
 import 'package:rock_and_roll_weather_app/providers/internet_connection_provider.dart';
 
@@ -30,7 +32,10 @@ void main() {
               ),
             ],
         child: MaterialApp(
-          home: HomePage(title: "Rock n' Tests"),
+          home: CityPage(
+            cityName: 'Silverstone',
+            countryName: 'United Kingdom',
+          ),
         ),
       ),
     );
@@ -41,21 +46,18 @@ void main() {
       await createWidget(tester);
 
       expect(find.text("Rock n' Weather"), findsOneWidget);
+      expect(find.text("Silverstone"), findsOneWidget);
       expect(find.text("No internet =("), findsNothing);
 
-      expect(find.byType(TextField), findsOneWidget);
-
       expect(find.byType(CustomAppBar), findsOneWidget);
-      expect(find.byIcon(Icons.arrow_back), findsNothing);
+      expect(find.byIcon(Icons.arrow_back), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsNothing);
       expect(find.byIcon(Icons.error), findsNothing);
 
-      expect(find.byType(CitiesList), findsOneWidget);
-      expect(find.byType(CityCard), findsNWidgets(4));
-      expect(find.text("Silverstone"), findsOneWidget);
-      expect(find.text("São Paulo"), findsOneWidget);
-      expect(find.text("Melbourne"), findsOneWidget);
-      expect(find.text("Monaco"), findsOneWidget);
+      expect(find.byType(CityPageHeader), findsOneWidget);
+      expect(find.byType(CurrentWeatherInfoCard), findsOneWidget);
+      expect(find.text("Forecast Days"), findsOneWidget);
+      expect(find.byType(ForecastTemperaturesList), findsOneWidget);
     });
 
     testWidgets('shows no internet banner', (tester) async {
@@ -71,66 +73,17 @@ void main() {
       expect(find.text("No internet =("), findsOneWidget);
     });
 
-    testWidgets('check text field', (tester) async {
-      await createWidget(tester);
-      expect(find.byType(TextField), findsOneWidget);
-
-      expect(find.text("Search cities..."), findsOneWidget);
-
-      const testInput = 'São P';
-      await tester.enterText(find.byType(TextField), testInput);
-
-      final textFieldWidget = tester.widget<TextField>(find.byType(TextField));
-      expect(textFieldWidget.controller?.text, equals(testInput));
-    });
-
-    testWidgets('check during loading of cities', (tester) async {
-      MockCityWeatherProvider mockWeather = MockCityWeatherProvider();
-
-      mockWeather.setFetching(true);
-
+    testWidgets('shows no internet banner', (tester) async {
       await createWidget(tester, mockedProviders: [
         ChangeNotifierProvider<InternetConnectionProvider>.value(
-          value: MockInternetConnectionProvider(),
+          value: MockNoInternetConnectionProvider(),
         ),
         ChangeNotifierProvider<CityWeatherProvider>.value(
-          value: mockWeather,
+          value: MockCityWeatherProvider(),
         ),
       ]);
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      expect(find.byIcon(Icons.error), findsNothing);
-    });
-
-    testWidgets('check when theres error during the fetch', (tester) async {
-      MockCityWeatherProvider mockWeather = MockCityWeatherProvider();
-
-      mockWeather.setFetching(false);
-      mockWeather.setFetchError("Error message", true);
-
-      await createWidget(tester, mockedProviders: [
-        ChangeNotifierProvider<InternetConnectionProvider>.value(
-          value: MockInternetConnectionProvider(),
-        ),
-        ChangeNotifierProvider<CityWeatherProvider>.value(
-          value: mockWeather,
-        ),
-      ]);
-
-      expect(find.byType(CircularProgressIndicator), findsNothing);
-      expect(find.byIcon(Icons.error), findsOneWidget);
-    });
-
-    testWidgets('open the CityPage when tap in the card', (tester) async {
-      await createWidget(tester);
-
-      expect(find.text('Silverstone'), findsOneWidget);
-      await tester.tap(find.text('Silverstone'));
-
-      await tester.idle();
-      await tester.pumpAndSettle();
-
-      expect(find.byType(CityPage), findsOneWidget);
+      expect(find.text("No internet =("), findsOneWidget);
     });
   });
 }

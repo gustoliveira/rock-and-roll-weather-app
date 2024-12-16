@@ -5,6 +5,7 @@ class City {
   final String country;
   final String? countryCode;
   final DayTemperature? currentTemperature;
+  final Map<DateTime, DayTemperature>? forecastTemperatures;
   final bool? isFetching;
   final String? fetchError;
 
@@ -13,6 +14,7 @@ class City {
     this.country, {
     this.countryCode,
     this.currentTemperature,
+    this.forecastTemperatures,
     this.isFetching,
     this.fetchError,
   });
@@ -22,6 +24,7 @@ class City {
         country = countryName,
         countryCode = map['sys']['country'],
         currentTemperature = DayTemperature.fromMap(map),
+        forecastTemperatures = {},
         isFetching = false,
         fetchError = null;
 
@@ -31,6 +34,7 @@ class City {
     DayTemperature? currentTemperature,
     bool? isFetching,
     String? fetchError,
+    Map<DateTime, DayTemperature>? forecastTemperatures,
   }) {
     return City(
       name ?? this.name,
@@ -38,6 +42,8 @@ class City {
       currentTemperature: currentTemperature ?? this.currentTemperature,
       isFetching: isFetching ?? this.isFetching,
       fetchError: fetchError ?? this.fetchError,
+      forecastTemperatures: forecastTemperatures ?? this.forecastTemperatures,
+      countryCode: countryCode,
     );
   }
 }
